@@ -1,11 +1,11 @@
 #!/bin/sh
 
 DOTDIR="dotfiles"
-DOTPATH="~/${DOTDIR}"
+DOTPATH="${HOME}/${DOTDIR}"
 GITHUB_URL="https://github.com/sanbo1/${DOTDIR}"
 
 ### get dotfiles dir
-if [ `ls -1 ~ | grep '${DOTDIR}' | wc -l` -eq 1 ]; then
+if [ `ls -1 ${HOME} | grep '${DOTDIR}' | wc -l` -eq 1 ]; then
     # do nothing. go to next step.
     echo "already exsist '${DOTDIR}'"
 elif [ `which 'git' | wc -l` -eq 1 ]; then
@@ -28,11 +28,8 @@ for f in .??*; do
     [ "${f}" = ".git" ] && continue
     #[ "${f}" = ".DS_Store" ] && continue    # for MAC
 
-    echo "link ${f}"
-    cp -ap "${HOME}/${f}" "${DOTPATH}/backup/."
+    cp -ap --no-dereference "${HOME}/${f}" "${DOTPATH}/backup/."
     ln -snfv "${DOTPATH}/${f}" "${HOME}/${f}"
 done
-
-
 
 
