@@ -3,6 +3,7 @@
 DOTDIR="dotfiles"
 DOTPATH="${HOME}/${DOTDIR}"
 GITHUB_URL="https://github.com/sanbo1/${DOTDIR}"
+ORGDIR="org_dotfiles"
 
 ### get dotfiles dir
 if [ `ls -1 ${HOME} | grep '${DOTDIR}' | wc -l` -eq 1 ]; then
@@ -28,7 +29,7 @@ for f in .??*; do
     [ "${f}" = ".git" ] && continue
     #[ "${f}" = ".DS_Store" ] && continue    # for MAC
 
-    cp -ap --no-dereference "${HOME}/${f}" "${DOTPATH}/backup/."
+    cp -ap --no-dereference "${HOME}/${f}" "${DOTPATH}/${ORGDIR}/."
     ln -snfv "${DOTPATH}/${f}" "${HOME}/${f}"
 done
 
