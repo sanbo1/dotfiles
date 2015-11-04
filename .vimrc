@@ -27,6 +27,12 @@ set hlsearch
 "カーソルラインを表示する
 "set cursorline
 
+"Tabをスペース4つに展開＆Tabの設定
+set tabstop=4
+set expandtab
+set shiftwidth=4
+
+
 
 "
 "ステータスライン関連
