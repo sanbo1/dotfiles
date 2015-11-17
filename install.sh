@@ -73,6 +73,19 @@ fi
 install_ vim
 
 
+### neobundle
+IS_VIM=$(which vim | wc -l)
+IS_GIT=$(which git | wc -l)
+URL_NEOBUNDLE="https://github.com/Shougo/neobundle.vim"
+#if [ (${IS_VIM} -eq 1) && (${IS_GIT} -eq 1) ]; then
+if [ ${IS_VIM} -a ${IS_GIT} ]; then
+    if [ ! -e "${HOME}/.vim/bundle" ]; then
+        mkdir ${HOME}/.vim/bundle
+        git clone ${URL_NEOBUNDLE} ${HOME}/.vim/bundle/neobundle.vim
+    fi
+fi
+
+
 ### make synborick link
 for f in .??*; do
     [ "${f}" = ".git" ] && continue

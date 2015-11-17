@@ -62,4 +62,56 @@ if has("autocmd")
 endif
 
 
+"---------------------------
+" Start Neobundle Settings.
+"---------------------------
+if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
+
+    " bundleで管理するディレクトリを指定
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+
+    " Required:
+    call neobundle#begin(expand('~/.vim/bundle/'))
+
+    " neobundle自体をneobundleで管理
+    NeoBundleFetch 'Shougo/neobundle.vim'
+
+    " ここに追加のプラグインを追記"
+    "-----
+    " NERDTreeを設定
+    "-----
+    NeoBundle 'scrooloose/nerdtree'
+    " NERDTree 関連設定
+    " ファイル指定で開かれた場合はNERDTreeは表示しない
+    if !argc()
+        autocmd vimenter * NERDTree|normal gg3j
+    endif
+
+
+    "-----
+    " 行末の半角スペースを可視化
+    "-----
+    NeoBundle 'bronson/vim-trailing-whitespace'
+
+
+    "-----
+    " vim用統合ユーザインターフェース
+    "-----
+    NeoBundle 'Shougo/unite.vim'
+
+
+    call neobundle#end()
+
+    " Required:
+    filetype plugin indent on
+
+    " 未インストールのプラグインがある場合、インストールするかを尋ねる設定
+    " 毎回聞かれると邪魔な場合もあるので、この設定は任意
+    NeoBundleCheck
+
+endif
+"-------------------------
+" End Neobundle Settings.
+"-------------------------
+
 
