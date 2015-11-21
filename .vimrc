@@ -90,6 +90,7 @@ if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
 
     "-----
     " 行末の半角スペースを可視化
+    " [:FixWhitespace] -> 行末の半角スペースを自動削除
     "-----
     NeoBundle 'bronson/vim-trailing-whitespace'
 
