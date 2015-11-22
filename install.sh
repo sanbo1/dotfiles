@@ -114,26 +114,18 @@ done
 
 ### [Caps Lock] -> [Ctrl]
 KEYFILE="/etc/default/keyboard"
-#echo "" > ${DOTPATH}/keyboard
 echo "change caps -> ctrl"
-#while read line ; do
-#    if [ "${line}" = "^XKBOPTIONS=" ]; then
-#        echo "XKBOPTIONS=\"ctrl:nocaps\"" >> ${DOTPATH}/keyboard
-#    else
-#        echo ${line} >> ${DOTPATH}/keyboard
-#    fi
-#done < ${KEYFILE} 
 if [ `cat ${KEYFILE} | grep 'XKBOPTIONS=""' | wc -l` -eq 1 ]; then
     sed -e 's/^XKBOPTIONS=""/XKBOPTIONS="ctrl:nocaps"/' ${KEYFILE} > ${DOTPATH}/keyboard
 else
     sed -e 's/^XKBOPTIONS="\(..*\)"/XKBOPTIONS="\1,ctrl:nocaps"/g' ${KEYFILE} > ${DOTPATH}/keyboard
 fi
-#echo ${DOTPATH}/keyboard
 if [ ! -e "${KEYFILE}_backup" ]; then
     sudo mv "${KEYFILE}" "${KEYFILE}_backup"
     sudo ln -snfv "${DOTPATH}/keyboard" "${KEYFILE}"
 fi
 
 
-
+echo "install finish !"
+echo "optional installer [./etc/install_raspi2_node.sh]
 
