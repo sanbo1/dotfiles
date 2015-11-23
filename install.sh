@@ -3,13 +3,27 @@
 DOTDIR="dotfiles"
 DOTPATH="${HOME}/${DOTDIR}"
 GITHUB_URL="https://github.com/sanbo1/${DOTDIR}"
-#ORGDIR="org_dotfiles"
 
 
-### inner function
-install_ () {
-#if ! Type $1 > /dev/null 2>&1; then
-if [ $(which $1 | wc -l) -eq 0 ]; then
+#
+# inner function
+#
+### command check
+isExistsCmd () {
+if type $1 > /dev/null 2>&1; then
+    # found
+    return 1
+else
+    # not found
+    return 0
+fi
+}
+
+### install command
+insCmd () {
+echo "install $1 ..."
+if ! type $1 > /dev/null 2>&1; then
+#if [ $(which $1 | wc -l) -eq 0 ]; then
     echo "install $1 ...."
     if type yum > /dev/null 2>&1; then
         `sudo yum install $1`
@@ -19,7 +33,7 @@ if [ $(which $1 | wc -l) -eq 0 ]; then
         echo "error: failed install $1."
         exit
     fi
-    echo "install $1 finish !!"
+    echo "install $1 finish"
 else
     echo "already install '$1'"
 fi
@@ -44,17 +58,18 @@ else
 fi
 
 ### install git
-install_ git
+insCmd git
 
 
 ### get dotfiles dir
 #if [ `ls -1 ${HOME} | grep '${DOTDIR}' | wc -l` -eq 1 ]; then
-echo ${DOTPATH};
+echo "git clone ${DOTPATH} ...";
 if [ -d ${DOTPATH} ]; then
     # do nothing. go to next step.
     echo "already exsist '${DOTPATH}'"
 #elif type git > /dev/null 2>&1; then
-elif [ $(which git | wc -l) -eq 0 ]; then
+#elif [ $(which git | wc -l) -eq 0 ]; then
+elif [ $(isExistsCmd git) -eq 1 ]; then
     echo "down load ${DOTPATH}"
     git clone --recursive "${GITHUB_URL}" "${DOTPATH}"
 else
@@ -70,23 +85,27 @@ if [ $? -ne 0 ]; then
 fi
 
 ### install vim
-install_ vim
+insCmd vim
 
 
 ### neobundle
-IS_VIM=$(which vim | wc -l)
-IS_GIT=$(which git | wc -l)
+#IS_VIM=$(which vim | wc -l)
+#IS_GIT=$(which git | wc -l)
 URL_NEOBUNDLE="https://github.com/Shougo/neobundle.vim"
 #if [ (${IS_VIM} -eq 1) && (${IS_GIT} -eq 1) ]; then
-if [ ${IS_VIM} -a ${IS_GIT} ]; then
+#if [ ${IS_VIM} -a ${IS_GIT} ]; then
+echo "install neobundle ..."
+if [ $(isExistsCmd vim) -a $(isExistsCmd git) ]; then
     if [ ! -e "${HOME}/.vim/bundle" ]; then
         mkdir ${HOME}/.vim/bundle
         git clone ${URL_NEOBUNDLE} ${HOME}/.vim/bundle/neobundle.vim
+        echo "install neobundle finish"
     fi
 fi
 
 
 ### make synborick link
+echo "make dotfiles synborick link"
 for f in .??*; do
     [ "${f}" = ".git" ] && continue
     #[ "${f}" = ".DS_Store" ] && continue    # for MAC
@@ -98,6 +117,7 @@ for f in .??*; do
         [ "${f}" = ".bashrc" ] && $(source ${HOME}/${f})
     fi
 done
+echo "make dotfiles synborick link finish"
 
 ### Change Caps_Lock to Ctrl
 #if type xmodmap > /dev/null 2>&1; then
@@ -124,8 +144,25 @@ if [ ! -e "${KEYFILE}_backup" ]; then
     sudo mv "${KEYFILE}" "${KEYFILE}_backup"
     sudo ln -snfv "${DOTPATH}/keyboard" "${KEYFILE}"
 fi
+echo "change caps -> ctrl finish"
 
 
-echo "install finish !"
-echo "optional installer [./etc/install_raspi2_node.sh]
+### mongodb
+echo "install mongodb"
+#if [ $(which mongo | wc -l) -eq 1 ]; then
+if [ $(isExistsCmd mongo) -eq 1 ]; then
+    CURRENT_PATH=$(pwd)
+    cd /usr/src
+    sudo wget https://github.com/tjanson/mongodb-armhf-deb/releases/download/v2.1.1-1/mongodb_2.1.1_armhf.deb
+    sudo aptitude install libboost-dev
+    sudo dpkg -i mongodb_2.1.1_armhf.deb
+    sudo rm -f mongodb_2.1.1_armhf.deb
+    cd ${CURRENT_PATH}
+    sudo /etc/init.d/mongodb start
+fi
+echo "install mongodb finish"
+
+
+echo "install finish !!"
+echo "optional installer [${DOTPATH}/etc/install_raspi2_node.sh]
 

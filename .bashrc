@@ -107,4 +107,5 @@ alias ll='ls -lA'
 alias la='ls -A'
 alias lla='ls -la'
 alias l='ls -CF'
+alias rm='rm -i'
 
