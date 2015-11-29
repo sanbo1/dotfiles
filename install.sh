@@ -151,6 +151,7 @@ echo "change caps -> ctrl finish"
 echo "install mongodb"
 #if [ $(which mongo | wc -l) -eq 1 ]; then
 if [ $(isExistsCmd mongo) -eq 1 ]; then
+if [ $(isExistsCmd dpkg) -eq 1 ]; then
     CURRENT_PATH=$(pwd)
     cd /usr/src
     sudo wget https://github.com/tjanson/mongodb-armhf-deb/releases/download/v2.1.1-1/mongodb_2.1.1_armhf.deb
@@ -158,7 +159,16 @@ if [ $(isExistsCmd mongo) -eq 1 ]; then
     sudo dpkg -i mongodb_2.1.1_armhf.deb
     sudo rm -f mongodb_2.1.1_armhf.deb
     cd ${CURRENT_PATH}
+elif [ $(isExistsCmd yum) -eq 1 ]; then
+    sudo yum install mongodb-org
+fi
     sudo /etc/init.d/mongodb start
+if [ $(isExistsCmd insserv) -eq 1 ]; then
+    sudo insserv -d mongodb
+elif [ $(isExistsCmd chkconfig) -eq 1 ]; then
+    sudo chkconfig --add mongod
+    sudo chkconfig mongod on
+fi
 fi
 echo "install mongodb finish"
 
