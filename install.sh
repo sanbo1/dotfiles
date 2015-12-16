@@ -88,22 +88,6 @@ fi
 insCmd vim
 
 
-### neobundle
-#IS_VIM=$(which vim | wc -l)
-#IS_GIT=$(which git | wc -l)
-URL_NEOBUNDLE="https://github.com/Shougo/neobundle.vim"
-#if [ (${IS_VIM} -eq 1) && (${IS_GIT} -eq 1) ]; then
-#if [ ${IS_VIM} -a ${IS_GIT} ]; then
-echo "install neobundle ..."
-if [ $(isExistsCmd vim) -a $(isExistsCmd git) ]; then
-    if [ ! -e "${HOME}/.vim/bundle" ]; then
-        mkdir ${HOME}/.vim/bundle
-        git clone ${URL_NEOBUNDLE} ${HOME}/.vim/bundle/neobundle.vim
-        echo "install neobundle finish"
-    fi
-fi
-
-
 ### make synborick link
 echo "make dotfiles synborick link"
 for f in .??*; do

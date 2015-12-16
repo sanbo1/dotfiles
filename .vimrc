@@ -27,9 +27,12 @@ set hlsearch
 "カーソルラインを表示する
 "set cursorline
 
-"Tabをスペース4つに展開＆Tabの設定
+"Tabをスペース4つ分で表示
 set tabstop=4
-set expandtab
+
+"Tabをスペースに変換
+"set expandtab
+"
 set shiftwidth=4
 
 
@@ -65,14 +68,24 @@ endif
 "---------------------------
 " Start Neobundle Settings.
 "---------------------------
+" neobundle settings {{{
+if has('vim_starting')
+  " neobundle をインストールしていない場合は自動インストール
+  if !isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
+    echo "install neobundle..."
+    " vim からコマンド呼び出しているだけ neobundle.vim のクローン
+    :call system("git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
+  endif
+  " runtimepath の追加は必須(bundleで管理するディレクトリを指定)
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
 if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
 
-    " bundleで管理するディレクトリを指定
-    set runtimepath+=~/.vim/bundle/neobundle.vim/
+    call neobundle#begin(expand('~/.vim/bundle'))
+    let g:neobundle_default_git_protocol='https'
 
-    " Required:
-    call neobundle#begin(expand('~/.vim/bundle/'))
-
+    " neobundle#begin - neobundle#end の間に導入するプラグインを記載
     " neobundle自体をneobundleで管理
     NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -101,15 +114,24 @@ if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
     NeoBundle 'Shougo/unite.vim'
 
 
-    call neobundle#end()
+    "-----
+    " 黒背景のカラースキーム
+    "-----
+    NeoBundle 'nanotech/jellybeans.vim'
 
-    " Required:
-    filetype plugin indent on
 
-    " 未インストールのプラグインがある場合、インストールするかを尋ねる設定
+    " vimrc に記述されたプラグインでインストールされていないものがないかチェックする
     " 毎回聞かれると邪魔な場合もあるので、この設定は任意
     NeoBundleCheck
 
+    call neobundle#end()
+
+    filetype plugin indent on
+
+    " jellybeans カラースキーマ設定
+    "set t_Co=256
+    "syntax on
+    "colorscheme jellybeans
 endif
 "-------------------------
 " End Neobundle Settings.
