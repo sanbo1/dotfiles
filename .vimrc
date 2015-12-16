@@ -61,7 +61,7 @@ set statusline+=[%p%%]
 
 "カーソル位置の記憶
 if has("autocmd")
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
 
@@ -72,9 +72,9 @@ endif
 if has('vim_starting')
   " neobundle をインストールしていない場合は自動インストール
   if !isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
-    echo "install neobundle..."
-    " vim からコマンド呼び出しているだけ neobundle.vim のクローン
-    :call system("git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
+	echo "install neobundle..."
+	" vim からコマンド呼び出しているだけ neobundle.vim のクローン
+	:call system("git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
   endif
   " runtimepath の追加は必須(bundleで管理するディレクトリを指定)
   set runtimepath+=~/.vim/bundle/neobundle.vim/
@@ -82,56 +82,80 @@ endif
 
 if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
 
-    call neobundle#begin(expand('~/.vim/bundle'))
-    let g:neobundle_default_git_protocol='https'
+	call neobundle#begin(expand('~/.vim/bundle'))
+	let g:neobundle_default_git_protocol='https'
 
-    " neobundle#begin - neobundle#end の間に導入するプラグインを記載
-    " neobundle自体をneobundleで管理
-    NeoBundleFetch 'Shougo/neobundle.vim'
+	" neobundle#begin - neobundle#end の間に導入するプラグインを記載
+	" neobundle自体をneobundleで管理
+	NeoBundleFetch 'Shougo/neobundle.vim'
 
-    " ここに追加のプラグインを追記"
-    "-----
-    " NERDTreeを設定
-    "-----
-    NeoBundle 'scrooloose/nerdtree'
-    " NERDTree 関連設定
-    " ファイル指定で開かれた場合はNERDTreeは表示しない
-    if !argc()
-        autocmd vimenter * NERDTree|normal gg3j
-    endif
+	" ここに追加のプラグインを追記"
+	"-----
+	" vim用統合ユーザインターフェース
+	"-----
+	NeoBundle 'Shougo/unite.vim'
+	""" unite.vim
+	" 入力モードで開始する
+	" let g:unite_enable_start_insert=1
+	" バッファ一覧
+	nnoremap <silent> <C-u><C-b> :<C-u>Unite buffer<CR>
+	" ファイル一覧
+	nnoremap <silent> <C-u><C-f> :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+	" レジスタ一覧
+	nnoremap <silent> <C-u><C-r> :<C-u>Unite -buffer-name=register register<CR>
+	" 最近使用したファイル一覧
+	nnoremap <silent> <C-u><C-m> :<C-u>Unite file_mru<CR>
+	" 常用セット
+	nnoremap <silent> <C-u><C-u> :<C-u>Unite buffer file_mru<CR>
+	" 全部乗せ
+	nnoremap <silent> <C-u><C-a> :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+	" ウィンドウを分割して開く
+	au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+	au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+	" ウィンドウを縦に分割して開く
+	au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+	au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+	" ESCキーを2回押すと終了する
+	au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
+	au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 
 
-    "-----
-    " 行末の半角スペースを可視化
-    " [:FixWhitespace] -> 行末の半角スペースを自動削除
-    "-----
-    NeoBundle 'bronson/vim-trailing-whitespace'
+	"-----
+	" NERDTreeを設定
+	"-----
+	NeoBundle 'scrooloose/nerdtree'
+	" NERDTree 関連設定
+	" ファイル指定で開かれた場合はNERDTreeは表示しない
+	if !argc()
+		autocmd vimenter * NERDTree|normal gg3j
+	endif
 
 
-    "-----
-    " vim用統合ユーザインターフェース
-    "-----
-    NeoBundle 'Shougo/unite.vim'
+	"-----
+	" 行末の半角スペースを可視化
+	" [:FixWhitespace] -> 行末の半角スペースを自動削除
+	"-----
+	NeoBundle 'bronson/vim-trailing-whitespace'
 
 
-    "-----
-    " 黒背景のカラースキーム
-    "-----
-    NeoBundle 'nanotech/jellybeans.vim'
+	"-----
+	" 黒背景のカラースキーム
+	"-----
+	NeoBundle 'nanotech/jellybeans.vim'
 
 
-    " vimrc に記述されたプラグインでインストールされていないものがないかチェックする
-    " 毎回聞かれると邪魔な場合もあるので、この設定は任意
-    NeoBundleCheck
+	" vimrc に記述されたプラグインでインストールされていないものがないかチェックする
+	" 毎回聞かれると邪魔な場合もあるので、この設定は任意
+	NeoBundleCheck
 
-    call neobundle#end()
+	call neobundle#end()
 
-    filetype plugin indent on
+	filetype plugin indent on
 
-    " jellybeans カラースキーマ設定
-    "set t_Co=256
-    "syntax on
-    "colorscheme jellybeans
+	" jellybeans カラースキーマ設定
+	"set t_Co=256
+	"syntax on
+	"colorscheme jellybeans
 endif
 "-------------------------
 " End Neobundle Settings.
