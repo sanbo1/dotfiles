@@ -12,8 +12,8 @@ set title
 syntax on
 
 "TAB,EOFなどを可視化する
-"set list
-"set listchars=tab:>-,extends:<,trail:-,eol:<
+set list
+set listchars=tab:>-,extends:<,trail:-,eol:<
 
 "改行時に前の行のインデントを継続する
 set autoindent
@@ -98,17 +98,17 @@ if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
 	" 入力モードで開始する
 	" let g:unite_enable_start_insert=1
 	" バッファ一覧
-	nnoremap <silent> <C-u><C-b> :<C-u>Unite buffer<CR>
+	nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
 	" ファイル一覧
-	nnoremap <silent> <C-u><C-f> :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+	nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 	" レジスタ一覧
-	nnoremap <silent> <C-u><C-r> :<C-u>Unite -buffer-name=register register<CR>
+	nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
 	" 最近使用したファイル一覧
-	nnoremap <silent> <C-u><C-m> :<C-u>Unite file_mru<CR>
+	nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
 	" 常用セット
-	nnoremap <silent> <C-u><C-u> :<C-u>Unite buffer file_mru<CR>
+	nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
 	" 全部乗せ
-	nnoremap <silent> <C-u><C-a> :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+	nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 	" ウィンドウを分割して開く
 	au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 	au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -153,9 +153,8 @@ if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
 	filetype plugin indent on
 
 	" jellybeans カラースキーマ設定
-	"set t_Co=256
-	"syntax on
-	"colorscheme jellybeans
+	set t_Co=256
+	colorscheme jellybeans
 endif
 "-------------------------
 " End Neobundle Settings.
