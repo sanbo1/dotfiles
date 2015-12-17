@@ -129,6 +129,9 @@ if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
 	if !argc()
 		autocmd vimenter * NERDTree|normal gg3j
 	endif
+	" 隠しファイルをデフォルトで表示させる
+	let NERDTreeShowHidden = 1
+
 
 
 	"-----
