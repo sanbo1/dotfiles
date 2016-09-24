@@ -12,10 +12,10 @@ GITHUB_URL="https://github.com/sanbo1/${DOTDIR}"
 isExistsCmd () {
 if type $1 > /dev/null 2>&1; then
 	# found
-	return 1
+	echo "1"
 else
 	# not found
-	return 0
+	echo "0"
 fi
 }
 
